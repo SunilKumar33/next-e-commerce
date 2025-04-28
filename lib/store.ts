@@ -1,5 +1,5 @@
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import { Product } from "../types/product";
 
 interface CartItem extends Product {
@@ -27,7 +27,9 @@ export const useCartStore = create<StoreState>()(
       total: 0,
       addToCart: (product) =>
         set((state) => {
-          const existingItem = state.items.find((item) => item.id === product.id);
+          const existingItem = state.items.find(
+            (item) => item.id === product.id
+          );
           if (existingItem) {
             return {
               ...state,
@@ -68,15 +70,27 @@ export const useCartStore = create<StoreState>()(
           };
         }),
       addToWishlist: (product) =>
-        set((state) => ({
-          ...state,
-          wishlist: [...state.wishlist, product],
-        })),
+        set((state) => {
+          const isInWishlist = state.wishlist.some(
+            (item) => item.id === product.id
+          );
+          if (isInWishlist) {
+            return {
+              wishlist: state.wishlist.filter((item) => item.id !== product.id),
+            };
+          }
+          return {
+            wishlist: [...state.wishlist, product],
+          };
+        }),
       removeFromWishlist: (id) =>
         set((state) => ({
-          ...state,
           wishlist: state.wishlist.filter((item) => item.id !== id),
         })),
+      isInWishlist: (id: string) => {
+        const state = useCartStore.getState();
+        return state.wishlist.some((item) => item.id === id);
+      },
     }),
     { name: "ecommerce-store" }
   )

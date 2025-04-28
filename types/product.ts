@@ -8,7 +8,3 @@ export interface Product {
   rating: number;
   inStock: boolean;
 }
-
-export interface CartItem extends Product {
-  quantity: number;
-}

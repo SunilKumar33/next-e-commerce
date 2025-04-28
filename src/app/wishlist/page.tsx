@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCartStore } from "../../../lib/store";
 import { WishlistItem } from "../../../types";
 
@@ -7,10 +8,20 @@ export default function Wishlist() {
   const { wishlist, removeFromWishlist } = useCartStore();
 
   return (
-    <div>
+    <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-4">Your Wishlist</h1>
       {wishlist.length === 0 ? (
-        <p>Your wishlist is empty.</p>
+        <div className="text-center py-12 bg-white rounded-lg shadow">
+          <h1 className="text-2xl text-gray-600 font-bold mb-6">
+            Your wishlist is empty
+          </h1>
+          <Link
+            href="/"
+            className="inline-block bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors"
+          >
+            Continue Shopping
+          </Link>
+        </div>
       ) : (
         <div className="space-y-4">
           {wishlist.map((item: WishlistItem) => (

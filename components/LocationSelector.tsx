@@ -9,10 +9,17 @@ interface Coordinates {
 }
 
 export function LocationSelector() {
-  const [location, setLocation] = useState<string>("New York");
-
+  const [location, setLocation] = useState<string>("Mangaluru");
   const [loading, setLoading] = useState(false);
-  const locations: string[] = ["New York", "Los Angeles", "Chicago", "Houston"];
+  const locations: string[] = [
+    "Mumbai",
+    "Bengaluru",
+    "Mangaluru",
+    "New York",
+    "Los Angeles",
+    "Chicago",
+    "Houston",
+  ];
 
   const getGeolocation = () => {
     setLoading(true);
@@ -21,10 +28,8 @@ export function LocationSelector() {
         async (position) => {
           const coords = {
             latitude: position.coords.latitude,
-            longitude: position.coords.longitude
+            longitude: position.coords.longitude,
           };
-          // Here you would typically make an API call to get the city name from coordinates
-          // For demo purposes, we'll just set the closest major city
           const closestCity = findClosestCity(coords);
           setLocation(closestCity);
           setLoading(false);
@@ -37,13 +42,16 @@ export function LocationSelector() {
     }
   };
 
-  // Simple function to find the closest city (demo purposes)
+  // Simple function to find the closest city
   const findClosestCity = (coords: Coordinates) => {
     const cityCoords = {
-      "New York": { lat: 40.7128, lng: -74.0060 },
+      Mumbai: { lat: 19.076, lng: 72.8777 },
+      Bengaluru: { lat: 12.9716, lng: 77.5946 },
+      Mangaluru: { lat: 12.9156, lng: 74.8559 },
+      "New York": { lat: 40.7128, lng: -74.006 },
       "Los Angeles": { lat: 34.0522, lng: -118.2437 },
-      "Chicago": { lat: 41.8781, lng: -87.6298 },
-      "Houston": { lat: 29.7604, lng: -95.3698 }
+      Chicago: { lat: 41.8781, lng: -87.6298 },
+      Houston: { lat: 29.7604, lng: -95.3698 },
     };
 
     let closestCity = locations[0];
@@ -52,7 +60,7 @@ export function LocationSelector() {
     for (const [city, cityCoord] of Object.entries(cityCoords)) {
       const distance = Math.sqrt(
         Math.pow(cityCoord.lat - coords.latitude, 2) +
-        Math.pow(cityCoord.lng - coords.longitude, 2)
+          Math.pow(cityCoord.lng - coords.longitude, 2)
       );
       if (distance < minDistance) {
         minDistance = distance;
